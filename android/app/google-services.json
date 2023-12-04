@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836519335520",
+    "project_id": "videxplore-6b82f",
+    "storage_bucket": "videxplore-6b82f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836519335520:android:bbfa3996848d7af38e5505",
+        "android_client_info": {
+          "package_name": "com.onkarsagare.videxplore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_TF_TI8scukxSdRpZpfVKwB8vxLIWGUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
