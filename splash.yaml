@@ -9,3 +9,5 @@ flutter_native_splash:
     color_dark: "#ffffff"
     image: assets\logos\videx.png
     image_dark: assets\logos\videx.png
+
+  web: false
