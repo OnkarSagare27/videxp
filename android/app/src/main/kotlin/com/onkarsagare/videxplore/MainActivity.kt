@@ -1,4 +1,4 @@
-package com.example.videxplore
+package com.onkarsagare.videxplore
 
 import io.flutter.embedding.android.FlutterActivity
 
