@@ -21,4 +21,6 @@ class AuthenticationProvider extends ChangeNotifier {
     bool status = preffs.getBool('isSignedIn') ?? false;
     return status;
   }
+
+  void signInWithPhone(BuildContext context, String phoneNumber) async {}
 }
