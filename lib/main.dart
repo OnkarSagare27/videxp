@@ -6,14 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:videxplore/provider/auth_provider.dart';
 import 'package:videxplore/screens/home_screen.dart';
-import 'package:videxplore/screens/phone.dart';
+import 'package:videxplore/screens/phone_verification_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   bool _isSignedIn = false;
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preffs = await SharedPreferences.getInstance();
-  _isSignedIn = preffs.getBool('isSignedIn') ?? true;
+  _isSignedIn = preffs.getBool('isSignedIn') ?? false;
   runApp(MyApp(isSignedIn: _isSignedIn));
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
