@@ -3,7 +3,7 @@ import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:videxplore/provider/auth_provider.dart';
 import 'package:videxplore/screens/user_info_screen.dart';
-import 'package:videxplore/utils/snackbar.dart';
+import 'package:videxplore/utils/utils.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;

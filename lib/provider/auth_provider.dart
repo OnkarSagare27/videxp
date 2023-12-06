@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/screens/otp_screen.dart';
-import 'package:videxplore/utils/snackbar.dart';
+import 'package:videxplore/utils/utils.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   bool _isSignedIn = false;
@@ -32,7 +32,14 @@ class AuthenticationProvider extends ChangeNotifier {
 
   void checkSignedIn() async {
     final SharedPreferences preffs = await SharedPreferences.getInstance();
-    _isSignedIn = preffs.getBool('is_signedin') ?? false;
+    _isSignedIn = preffs.getBool('isSignedin') ?? false;
+    notifyListeners();
+  }
+
+  Future setSignIn() async {
+    final SharedPreferences preffs = await SharedPreferences.getInstance();
+    await preffs.setBool("isSignedIn", true);
+    _isSignedIn = true;
     notifyListeners();
   }
 
@@ -113,8 +120,9 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await storeFileToSotage("profilePic$_uid", profilePic).then((value) {
+        print(value);
         userModel.pfp = value;
-        userModel.name = _firebaseAuth.currentUser!.phoneNumber!;
+        userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
         userModel.uid = _firebaseAuth.currentUser!.uid;
       });
       _userModel = userModel;
@@ -135,6 +143,7 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<String> storeFileToSotage(String ref, File file) async {
+    print(file);
     UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();

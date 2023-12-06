@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/provider/auth_provider.dart';
-import 'package:videxplore/utils/snackbar.dart';
+import 'package:videxplore/screens/home_screen.dart';
+import 'package:videxplore/utils/utils.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
@@ -34,127 +35,128 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Center(
-            child: isLoading == true
-                ? const CircularProgressIndicator(
-                    color: Colors.amber,
-                  )
-                : Column(
-                    children: [
-                      SizedBox(
-                        height: screenSize.width * 10 / 100,
+          child: Center(
+        child: SingleChildScrollView(
+          child: isLoading == true
+              ? const CircularProgressIndicator(
+                  color: Colors.amber,
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      height: screenSize.width * 10 / 100,
+                    ),
+                    Text(
+                      'Create Profile',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: screenSize.width * 6 / 100,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        'Create Profile',
-                        textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: screenSize.width * 10 / 100,
+                    ),
+                    InkWell(
+                      onTap: () => selectImage(),
+                      child: pfp == null
+                          ? CircleAvatar(
+                              radius: screenSize.width * 15 / 100,
+                              backgroundColor: Colors.amber,
+                              child: Icon(
+                                Icons.account_circle,
+                                color: Colors.white,
+                                size: screenSize.width * 30 / 100,
+                              ),
+                            )
+                          : CircleAvatar(
+                              backgroundImage: FileImage(pfp!),
+                              radius: screenSize.width * 15 / 100,
+                              backgroundColor: Colors.amber,
+                            ),
+                    ),
+                    SizedBox(
+                      height: screenSize.width * 10 / 100,
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 80 / 100,
+                      child: TextFormField(
+                        maxLength: 10,
                         style: TextStyle(
-                          fontSize: screenSize.width * 6 / 100,
-                          fontWeight: FontWeight.bold,
+                            fontSize: screenSize.width * 4 / 100,
+                            fontWeight: FontWeight.normal),
+                        onChanged: (input) {
+                          setState(() {
+                            usernameController.text = input;
+                          });
+                        },
+                        controller: usernameController,
+                        cursorColor: Colors.black,
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: screenSize.width * 4 / 100,
+                          ),
+                          hintText: 'Enter name',
+                          hintStyle:
+                              const TextStyle(fontWeight: FontWeight.normal),
+                          prefixIcon: Icon(Icons.person),
+                          fillColor: Colors.grey[300],
+                          filled: true,
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
+                          ),
+                          suffixIcon: usernameController.text.length > 9
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: screenSize.width * 6 / 100,
+                                )
+                              : null,
                         ),
                       ),
-                      SizedBox(
-                        height: screenSize.width * 10 / 100,
-                      ),
-                      InkWell(
-                        onTap: () => selectImage(),
-                        child: pfp == null
-                            ? CircleAvatar(
-                                radius: screenSize.width * 15 / 100,
-                                backgroundColor: Colors.amber,
-                                child: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.white,
-                                  size: screenSize.width * 30 / 100,
-                                ),
-                              )
-                            : CircleAvatar(
-                                backgroundImage: FileImage(pfp!),
-                                radius: screenSize.width * 15 / 100,
-                                backgroundColor: Colors.amber,
-                              ),
-                      ),
-                      SizedBox(
-                        height: screenSize.width * 10 / 100,
-                      ),
-                      SizedBox(
-                        width: screenSize.width * 80 / 100,
-                        child: TextFormField(
-                          maxLength: 10,
+                    ),
+                    SizedBox(
+                      height: screenSize.width * 10 / 100,
+                    ),
+                    SizedBox(
+                      height: screenSize.width * 14 / 100,
+                      width: screenSize.width * 80 / 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onPressed: () => storeData(),
+                        child: Text(
+                          'Continue',
                           style: TextStyle(
-                              fontSize: screenSize.width * 4 / 100,
-                              fontWeight: FontWeight.normal),
-                          onChanged: (input) {
-                            setState(() {
-                              usernameController.text = input;
-                            });
-                          },
-                          controller: usernameController,
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.name,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: screenSize.width * 4 / 100,
-                            ),
-                            hintText: 'Enter name',
-                            hintStyle:
-                                const TextStyle(fontWeight: FontWeight.normal),
-                            prefixIcon: Icon(Icons.person),
-                            fillColor: Colors.grey[300],
-                            filled: true,
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                              ),
-                            ),
-                            suffixIcon: usernameController.text.length > 9
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: screenSize.width * 6 / 100,
-                                  )
-                                : null,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenSize.width * 4 / 100,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: screenSize.width * 10 / 100,
-                      ),
-                      SizedBox(
-                        height: screenSize.width * 14 / 100,
-                        width: screenSize.width * 80 / 100,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amber,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
-                          onPressed: () => storeData(),
-                          child: Text(
-                            'Continue',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenSize.width * 4 / 100,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+        ),
       )),
     );
   }
@@ -172,7 +174,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           userModel: userModel,
           profilePic: pfp!,
           onSuccess: () {
-            authPro.saveUserLocally();
+            authPro.saveUserLocally().then(
+                  (value) => authPro.setSignIn().then(
+                        (value) => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
+                            (route) => false),
+                      ),
+                );
           });
     } else {
       showSnackBar(context, "Please upload a profile picture");
