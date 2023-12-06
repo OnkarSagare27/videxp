@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/screens/otp_screen.dart';
 import 'package:videxplore/utils/snackbar.dart';
 
@@ -14,9 +19,12 @@ class AuthenticationProvider extends ChangeNotifier {
 
   String? _uid;
   String get uid => _uid!;
+  UserModel? _userModel;
+  UserModel get userModel => _userModel!;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseSotage = FirebaseStorage.instance;
 
   AuthenticationProvider() {
     checkSignedIn();
@@ -93,5 +101,48 @@ class AuthenticationProvider extends ChangeNotifier {
       print("USER DOES NOT EXIST");
       return false;
     }
+  }
+
+  void saveUser({
+    required BuildContext context,
+    required UserModel userModel,
+    required File profilePic,
+    required Function onSuccess,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await storeFileToSotage("profilePic$_uid", profilePic).then((value) {
+        userModel.pfp = value;
+        userModel.name = _firebaseAuth.currentUser!.phoneNumber!;
+        userModel.uid = _firebaseAuth.currentUser!.uid;
+      });
+      _userModel = userModel;
+      await _firebaseFirestore
+          .collection("users")
+          .doc(_uid)
+          .set(userModel.toMap())
+          .then((value) {
+        onSuccess();
+        _isLoading = false;
+        notifyListeners();
+      });
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<String> storeFileToSotage(String ref, File file) async {
+    UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future saveUserLocally() async {
+    SharedPreferences preffs = await SharedPreferences.getInstance();
+    await preffs.setString("userModel", jsonEncode(userModel.toMap()));
   }
 }

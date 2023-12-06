@@ -46,6 +46,9 @@ dependencies:
   shared_preferences: ^2.2.2
   provider: ^6.1.1
   pinput: ^3.0.1
+  camera: ^0.10.5+5
+  video_player: ^2.8.1
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
