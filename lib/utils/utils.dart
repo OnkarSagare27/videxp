@@ -14,7 +14,7 @@ void showSnackBar(BuildContext context, String content) {
 Future<File?> pickImage(BuildContext context) async {
   File? image;
   try {
-    var status = await Permission.manageExternalStorage.request();
+    var status = await Permission.photos.request();
     if (status.isGranted) {
     } else if (status.isPermanentlyDenied) {
       openAppSettings();

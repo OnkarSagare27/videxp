@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:videxplore/screens/explore_screen.dart';
 import 'package:videxplore/screens/library_screen.dart';
@@ -104,7 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(right: 20, top: 20, bottom: 20),
               child: FloatingActionButton(
                 backgroundColor: Colors.amber,
-                onPressed: () {
+                onPressed: () async {
+                  Map<Permission, PermissionStatus> statuses = await [
+                    Permission.storage,
+                    Permission.videos,
+                    Permission.camera,
+                    Permission.manageExternalStorage,
+                  ].request();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
