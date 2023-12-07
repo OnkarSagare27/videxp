@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:videxplore/provider/auth_provider.dart';
+import 'package:videxplore/screens/home_screen.dart';
+import 'package:videxplore/screens/phone_verification_screen.dart';
 import 'package:videxplore/screens/user_info_screen.dart';
 import 'package:videxplore/utils/utils.dart';
 
@@ -148,7 +150,12 @@ class _OtpScreenState extends State<OtpScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: screenSize.width * 4 / 100),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PhoneScreen()));
+                          },
                           child: Text(
                             'Resend OTP',
                             style: TextStyle(
@@ -172,19 +179,26 @@ class _OtpScreenState extends State<OtpScreen> {
   void verifyOtp(BuildContext context, String userOtp) {
     final authPro = Provider.of<AuthenticationProvider>(context, listen: false);
     authPro.verifyOtp(
-        context: context,
-        verificationId: widget.verificationId,
-        userOtp: userOtp,
-        onSuccess: () {
-          authPro.userExist().then((value) async {
+      context: context,
+      verificationId: widget.verificationId,
+      userOtp: userOtp,
+      onSuccess: () {
+        authPro.userExist().then(
+          (value) async {
             if (value) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
             } else {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => UserInfoScreen()),
                   (route) => false);
             }
-          });
-        });
+          },
+        );
+      },
+    );
   }
 }

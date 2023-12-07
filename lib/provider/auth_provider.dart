@@ -102,7 +102,17 @@ class AuthenticationProvider extends ChangeNotifier {
     DocumentSnapshot snapshot =
         await _firebaseFirestore.collection("users").doc(_uid).get();
     if (snapshot.exists) {
-      print('USER exist');
+      SharedPreferences preffs = await SharedPreferences.getInstance();
+      _userModel = UserModel(
+        name: snapshot.get('name'),
+        uid: snapshot.get('uid'),
+        pfp: snapshot.get('pfp'),
+        phoneNumber: snapshot.get('phoneNumber'),
+      );
+      await preffs.setString('userModel', jsonEncode(userModel.toMap()));
+      setSignIn();
+      _isLoading = false;
+      notifyListeners();
       return true;
     } else {
       print("USER DOES NOT EXIST");
