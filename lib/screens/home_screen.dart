@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:videxplore/screens/explore_screen.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ImagePicker _picker = ImagePicker();
   dynamic userModel = '';
   int _selectedIndex = 0;
   PageController controller = PageController();
@@ -123,12 +125,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else if (status == PermissionStatus.granted) {}
                     },
                   );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PostNewVideoScreen(),
-                    ),
-                  );
+                  final XFile? file = await _picker.pickVideo(
+                      source: ImageSource.camera,
+                      maxDuration: const Duration(seconds: 10));
+                  if (file != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostNewVideoScreen(
+                          file: file,
+                        ),
+                      ),
+                    );
+                  } else {
+                    showSnackBar(context,
+                        'Record a video of minimum duration of 1 second to upload.');
+                  }
                 },
                 elevation: 0.0,
                 child: const Icon(

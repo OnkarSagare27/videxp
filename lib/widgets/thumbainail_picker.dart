@@ -1,15 +1,21 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 class ThumbnailPicker extends StatefulWidget {
-  final double height;
-  final double width;
-  final double borderRadius;
+  double height;
+  double width;
+  void Function() onTap;
+  BorderRadius borderRadius;
+  Widget child;
 
-  const ThumbnailPicker({
+  ThumbnailPicker({
     super.key,
-    this.height = 100,
-    this.width = 200,
-    this.borderRadius = 20,
+    this.height = 200,
+    this.width = 300,
+    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
+    required this.onTap,
+    required this.child,
   });
 
   @override
@@ -19,11 +25,21 @@ class ThumbnailPicker extends StatefulWidget {
 class _ThumbnailPickerState extends State<ThumbnailPicker> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius))),
+    return InkWell(
+      borderRadius: widget.borderRadius,
+      onTap: widget.onTap,
+      child: ClipRRect(
+        borderRadius: widget.borderRadius,
+        child: Container(
+          height: widget.height,
+          width: widget.width,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: widget.borderRadius,
+          ),
+          child: widget.child,
+        ),
+      ),
     );
   }
 }

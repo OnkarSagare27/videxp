@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:videxplore/models/user_model.dart';
+import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/screens/otp_screen.dart';
 import 'package:videxplore/utils/utils.dart';
 
@@ -152,7 +153,49 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  // vid upload
+  void uploadVideo({
+    required BuildContext context,
+    required VideoModel videoModel,
+    required Function onSuccess,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await storeVideoToSotage(
+              '${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}',
+              File(videoModel.file!.path))
+          .then((value) {
+        videoModel.videoId =
+            '${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}';
+        videoModel.uploaderName = userModel.name;
+        videoModel.uploaderUid = _firebaseAuth.currentUser!.uid;
+        videoModel.videoUrl = value;
+      });
+      await _firebaseFirestore
+          .collection("videos")
+          .doc()
+          .set(videoModel.toMap())
+          .then((value) {
+        onSuccess();
+        _isLoading = false;
+        notifyListeners();
+      });
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<String> storeFileToSotage(String ref, File file) async {
+    UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<String> storeVideoToSotage(String ref, File file) async {
     UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();

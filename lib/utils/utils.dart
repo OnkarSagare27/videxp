@@ -23,6 +23,7 @@ Future<File?> pickImage(BuildContext context) async {
     } else if (status.isPermanentlyDenied) {
       openAppSettings();
     }
+
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
