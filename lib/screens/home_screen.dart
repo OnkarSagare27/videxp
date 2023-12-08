@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -108,10 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.amber,
                 onPressed: () async {
                   Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage,
                     Permission.videos,
                     Permission.camera,
-                    Permission.manageExternalStorage,
+                    Permission.locationWhenInUse,
                   ].request();
                   statuses.forEach(
                     (permission, status) {
@@ -119,18 +120,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         showSnackBar(
                             context, '${permission.toString()} is required');
                         openAppSettings();
-                      } else if (status == PermissionStatus.granted) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PostNewVideoScreen(),
-                          ),
-                        );
-                      }
+                      } else if (status == PermissionStatus.granted) {}
                     },
                   );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PostNewVideoScreen(),
+                    ),
+                  );
                 },
-                elevation: 3.0,
+                elevation: 0.0,
                 child: const Icon(
                   Icons.add,
                   color: Colors.white,
