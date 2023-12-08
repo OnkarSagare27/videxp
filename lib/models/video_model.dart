@@ -5,14 +5,16 @@ class VideoModel {
   XFile? file;
   String videoId;
   String uploaderName;
+  String uploaderPfp;
   String uploaderUid;
   int views;
   String category;
   String location;
-  String postedTimeStamp;
+  int postedTimeStamp;
   String videoUrl;
   int likes;
   int dislikes;
+  dynamic thumbnail;
   List<dynamic> comments;
 
   VideoModel({
@@ -20,6 +22,7 @@ class VideoModel {
     required this.file,
     required this.videoId,
     required this.uploaderName,
+    required this.uploaderPfp,
     required this.views,
     required this.category,
     required this.location,
@@ -29,13 +32,16 @@ class VideoModel {
     required this.dislikes,
     required this.likes,
     required this.comments,
+    required this.thumbnail,
   });
 
   Map<String, dynamic> toMap() {
     return {
       "title": title,
       "videoId": videoId,
+      "thumbnail": thumbnail,
       "uploaderName": uploaderName,
+      "uploaderPfp": uploaderPfp,
       "uploaderUid": uploaderUid,
       "views": views,
       "category": category,

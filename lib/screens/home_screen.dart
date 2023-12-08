@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/screens/explore_screen.dart';
 import 'package:videxplore/screens/library_screen.dart';
 import 'package:videxplore/screens/post_new_video.dart';
@@ -19,13 +22,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker _picker = ImagePicker();
-  dynamic userModel = '';
+  late UserModel userModel;
   int _selectedIndex = 0;
   PageController controller = PageController();
   List<GButton> tabs = [];
   @override
   void initState() {
     super.initState();
+    fetch();
     var padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 5);
     double gap = 10;
 
@@ -54,9 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
-  Future<dynamic> fetch() async {
+  void fetch() async {
     SharedPreferences preff = await SharedPreferences.getInstance();
-    return preff.getString('userModel');
+    userModel =
+        UserModel.fromMap(jsonDecode(preff.getString('userModel').toString()));
+    setState(() {});
   }
 
   @override
@@ -157,9 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getScreen(int selectedIndex) {
     if (selectedIndex == 0) {
-      return const ExploreScreen();
+      return ExploreScreen(
+        userModel: userModel,
+      );
     } else if (selectedIndex == 1) {
-      return const LibraryScreen();
+      return LibraryScreen(
+        userModel: userModel,
+      );
     }
   }
 }

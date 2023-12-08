@@ -14,10 +14,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preffs = await SharedPreferences.getInstance();
   isSignedIn = preffs.getBool('isSignedIn') ?? false;
-  runApp(MyApp(isSignedIn: isSignedIn));
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(MyApp(isSignedIn: isSignedIn));
 }
 
 class MyApp extends StatelessWidget {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         title: 'VidExplore',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          brightness: Brightness.light,
           fontFamily: GoogleFonts.poppins().fontFamily,
           scaffoldBackgroundColor: Colors.white,
         ),

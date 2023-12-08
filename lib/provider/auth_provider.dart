@@ -162,8 +162,8 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await storeVideoToSotage(
-              '${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}',
+      await storeFileToSotage(
+              'video_${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}',
               File(videoModel.file!.path))
           .then((value) {
         videoModel.videoId =
@@ -171,10 +171,16 @@ class AuthenticationProvider extends ChangeNotifier {
         videoModel.uploaderName = userModel.name;
         videoModel.uploaderUid = _firebaseAuth.currentUser!.uid;
         videoModel.videoUrl = value;
+        videoModel.uploaderPfp = userModel.pfp;
       });
+      await storeFileToSotage(
+              'thumbnail_${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}',
+              videoModel.thumbnail)
+          .then((value) => videoModel.thumbnail = value);
+      _userModel = userModel;
       await _firebaseFirestore
           .collection("videos")
-          .doc()
+          .doc(videoModel.videoId)
           .set(videoModel.toMap())
           .then((value) {
         onSuccess();
@@ -195,15 +201,15 @@ class AuthenticationProvider extends ChangeNotifier {
     return downloadUrl;
   }
 
-  Future<String> storeVideoToSotage(String ref, File file) async {
+  Future saveUserLocally() async {
+    SharedPreferences preffs = await SharedPreferences.getInstance();
+    await preffs.setString("userModel", jsonEncode(userModel.toMap()));
+  }
+
+  Future<dynamic> getVideos(String ref, File file) async {
     UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
-  }
-
-  Future saveUserLocally() async {
-    SharedPreferences preffs = await SharedPreferences.getInstance();
-    await preffs.setString("userModel", jsonEncode(userModel.toMap()));
   }
 }
