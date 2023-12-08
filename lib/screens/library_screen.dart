@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:videxplore/models/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:videxplore/provider/auth_provider.dart';
 
 class LibraryScreen extends StatefulWidget {
-  final UserModel userModel;
-  const LibraryScreen({super.key, required this.userModel});
+  const LibraryScreen({super.key});
 
   @override
   State<LibraryScreen> createState() => _LibraryScreenState();
@@ -22,6 +21,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authPro = Provider.of<AuthenticationProvider>(context, listen: false);
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -38,7 +38,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('videos')
-            .where("uploaderUid", isEqualTo: widget.userModel.uid)
+            .where("uploaderUid", isEqualTo: authPro.userModel.uid)
             .snapshots(),
         builder: (_, snapshot) {
           if (snapshot.hasError) return Text('Error = ${snapshot.error}');

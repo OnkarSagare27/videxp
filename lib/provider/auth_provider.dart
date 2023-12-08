@@ -31,6 +31,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   AuthenticationProvider() {
     checkSignedIn();
+    getDataFromSP();
   }
 
   void checkSignedIn() async {
@@ -177,7 +178,6 @@ class AuthenticationProvider extends ChangeNotifier {
               'thumbnail_${userModel.name}_${videoModel.title.replaceAll(" ", "_")}_${userModel.uid}',
               videoModel.thumbnail)
           .then((value) => videoModel.thumbnail = value);
-      _userModel = userModel;
       await _firebaseFirestore
           .collection("videos")
           .doc(videoModel.videoId)
@@ -211,5 +211,13 @@ class AuthenticationProvider extends ChangeNotifier {
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  Future getDataFromSP() async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    String data = s.getString("userModel") ?? '';
+    _userModel = UserModel.fromMap(jsonDecode(data));
+    _uid = _userModel!.uid;
+    notifyListeners();
   }
 }

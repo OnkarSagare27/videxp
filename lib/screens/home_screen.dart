@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ImagePicker _picker = ImagePicker();
-  late UserModel userModel;
+  UserModel? userModel;
   int _selectedIndex = 0;
   PageController controller = PageController();
   List<GButton> tabs = [];
@@ -67,109 +67,114 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView.builder(
-        onPageChanged: (page) {
-          setState(() {
-            _selectedIndex = page;
-          });
-        },
-        controller: controller,
-        itemBuilder: (BuildContext context, int index) {
-          return getScreen(index);
-        },
-        itemCount: tabs.length,
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: -10,
-                        blurRadius: 60,
-                        color: Colors.black.withOpacity(.20),
-                        offset: const Offset(0, 15))
-                  ]),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-                child: GNav(
-                    tabs: tabs,
-                    selectedIndex: _selectedIndex,
-                    onTabChange: (index) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                      controller.jumpToPage(index);
-                    }),
-              ),
+    return userModel != null
+        ? Scaffold(
+            body: PageView.builder(
+              onPageChanged: (page) {
+                setState(() {
+                  _selectedIndex = page;
+                });
+              },
+              controller: controller,
+              itemBuilder: (BuildContext context, int index) {
+                return getScreen(index);
+              },
+              itemCount: tabs.length,
             ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, top: 20, bottom: 20),
-              child: FloatingActionButton(
-                backgroundColor: Colors.amber,
-                onPressed: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.videos,
-                    Permission.camera,
-                    Permission.locationWhenInUse,
-                  ].request();
-                  statuses.forEach(
-                    (permission, status) {
-                      if (status == PermissionStatus.denied) {
-                        showSnackBar(
-                            context, '${permission.toString()} is required');
-                        openAppSettings();
-                      } else if (status == PermissionStatus.granted) {}
-                    },
-                  );
-                  final XFile? file = await _picker.pickVideo(
-                      source: ImageSource.camera,
-                      maxDuration: const Duration(seconds: 10));
-                  if (file != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostNewVideoScreen(
-                          file: file,
-                        ),
+            bottomNavigationBar: SafeArea(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(100)),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: -10,
+                              blurRadius: 60,
+                              color: Colors.black.withOpacity(.20),
+                              offset: const Offset(0, 15))
+                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 5),
+                      child: GNav(
+                          tabs: tabs,
+                          selectedIndex: _selectedIndex,
+                          onTabChange: (index) {
+                            setState(() {
+                              _selectedIndex = index;
+                            });
+                            controller.jumpToPage(index);
+                          }),
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(right: 20, top: 20, bottom: 20),
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.amber,
+                      onPressed: () async {
+                        Map<Permission, PermissionStatus> statuses = await [
+                          Permission.videos,
+                          Permission.camera,
+                          Permission.locationWhenInUse,
+                        ].request();
+                        statuses.forEach(
+                          (permission, status) {
+                            if (status == PermissionStatus.denied) {
+                              showSnackBar(context,
+                                  '${permission.toString()} is required');
+                              openAppSettings();
+                            } else if (status == PermissionStatus.granted) {}
+                          },
+                        );
+                        final XFile? file = await _picker.pickVideo(
+                            source: ImageSource.camera,
+                            maxDuration: const Duration(seconds: 10));
+                        if (file != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PostNewVideoScreen(
+                                file: file,
+                              ),
+                            ),
+                          );
+                        } else {
+                          showSnackBar(context,
+                              'Record a video of minimum duration of 1 second to upload.');
+                        }
+                      },
+                      elevation: 0.0,
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
                       ),
-                    );
-                  } else {
-                    showSnackBar(context,
-                        'Record a video of minimum duration of 1 second to upload.');
-                  }
-                },
-                elevation: 0.0,
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : const Center(
+            child: CircularProgressIndicator(
+              color: Colors.amber,
+            ),
+          );
   }
 
   getScreen(int selectedIndex) {
     if (selectedIndex == 0) {
-      return ExploreScreen(
-        userModel: userModel,
-      );
+      return const ExploreScreen();
     } else if (selectedIndex == 1) {
-      return LibraryScreen(
-        userModel: userModel,
-      );
+      return const LibraryScreen();
     }
   }
 }

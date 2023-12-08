@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:videxplore/models/user_model.dart';
 
 class ExploreScreen extends StatefulWidget {
-  final UserModel userModel;
-  const ExploreScreen({super.key, required this.userModel});
+  const ExploreScreen({super.key});
 
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();

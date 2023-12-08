@@ -84,51 +84,57 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
                     )
                   : _success
                       ? SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                                size: screenSize.width * 10 / 100,
-                              ),
-                              SizedBox(
-                                height: screenSize.width * 10 / 100,
-                              ),
-                              Text(
-                                'Upload Successful',
-                                style: TextStyle(
-                                    fontSize: screenSize.width * 5 / 100,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: screenSize.width * 30 / 100,
-                              ),
-                              SizedBox(
-                                height: screenSize.width * 14 / 100,
-                                width: screenSize.width * 80 / 100,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.amber,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: screenSize.width * 40 / 100,
+                                ),
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: screenSize.width * 20 / 100,
+                                ),
+                                SizedBox(
+                                  height: screenSize.width * 10 / 100,
+                                ),
+                                Text(
+                                  'Upload Successful',
+                                  style: TextStyle(
+                                      fontSize: screenSize.width * 5 / 100,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: screenSize.width * 60 / 100,
+                                ),
+                                SizedBox(
+                                  height: screenSize.width * 14 / 100,
+                                  width: screenSize.width * 80 / 100,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.amber,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'Explore Videos',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: screenSize.width * 4 / 100,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      'Explore Videos',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: screenSize.width * 4 / 100,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       : SingleChildScrollView(
