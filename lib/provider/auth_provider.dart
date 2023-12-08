@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -115,7 +117,6 @@ class AuthenticationProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } else {
-      print("USER DOES NOT EXIST");
       return false;
     }
   }
@@ -130,7 +131,6 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await storeFileToSotage("profilePic$_uid", profilePic).then((value) {
-        print(value);
         userModel.pfp = value;
         userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
         userModel.uid = _firebaseAuth.currentUser!.uid;
@@ -153,7 +153,6 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<String> storeFileToSotage(String ref, File file) async {
-    print(file);
     UploadTask uploadTask = _firebaseSotage.ref().child(ref).putFile(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();

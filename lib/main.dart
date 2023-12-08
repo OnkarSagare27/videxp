@@ -10,11 +10,11 @@ import 'package:videxplore/screens/phone_verification_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
-  bool _isSignedIn = false;
+  bool isSignedIn = false;
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preffs = await SharedPreferences.getInstance();
-  _isSignedIn = preffs.getBool('isSignedIn') ?? false;
-  runApp(MyApp(isSignedIn: _isSignedIn));
+  isSignedIn = preffs.getBool('isSignedIn') ?? false;
+  runApp(MyApp(isSignedIn: isSignedIn));
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

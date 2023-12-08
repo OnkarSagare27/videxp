@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomClipPathContainer extends StatelessWidget {
+  const CustomClipPathContainer({super.key});
   @override
   Widget build(BuildContext context) {
     return ClipPath(

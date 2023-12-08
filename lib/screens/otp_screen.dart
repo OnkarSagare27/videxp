@@ -31,7 +31,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
               )
             : SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -154,7 +154,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PhoneScreen()));
+                                    builder: (context) => const PhoneScreen()));
                           },
                           child: Text(
                             'Resend OTP',
@@ -188,12 +188,13 @@ class _OtpScreenState extends State<OtpScreen> {
             if (value) {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                   (route) => false);
             } else {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => UserInfoScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const UserInfoScreen()),
                   (route) => false);
             }
           },

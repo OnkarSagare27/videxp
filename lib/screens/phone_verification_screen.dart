@@ -11,7 +11,7 @@ class PhoneScreen extends StatefulWidget {
 }
 
 class _PhoneScreenState extends State<PhoneScreen> {
-  TextEditingController _inputcontroller = TextEditingController();
+  final TextEditingController _inputcontroller = TextEditingController();
   Country selectedCountry = Country(
     phoneCode: "91",
     countryCode: "IN",
@@ -30,7 +30,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

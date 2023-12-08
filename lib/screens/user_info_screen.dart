@@ -101,7 +101,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                           hintText: 'Enter name',
                           hintStyle:
                               const TextStyle(fontWeight: FontWeight.normal),
-                          prefixIcon: Icon(Icons.person),
+                          prefixIcon: const Icon(Icons.person),
                           fillColor: Colors.grey[300],
                           filled: true,
                           border: const OutlineInputBorder(

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:videxplore/screens/explore_screen.dart';
 import 'package:videxplore/screens/library_screen.dart';
 import 'package:videxplore/screens/post_new_video.dart';
+import 'package:videxplore/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    var padding = EdgeInsets.symmetric(horizontal: 18, vertical: 5);
+    var padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 5);
     double gap = 10;
 
     tabs.add(GButton(
@@ -75,16 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
                   color: Colors.amber,
-                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
                   boxShadow: [
                     BoxShadow(
                         spreadRadius: -10,
                         blurRadius: 60,
                         color: Colors.black.withOpacity(.20),
-                        offset: Offset(0, 15))
+                        offset: const Offset(0, 15))
                   ]),
               child: Padding(
                 padding:
@@ -112,12 +113,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     Permission.camera,
                     Permission.manageExternalStorage,
                   ].request();
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostNewVideoScreen(),
-                    ),
+                  statuses.forEach(
+                    (permission, status) {
+                      if (status == PermissionStatus.denied) {
+                        showSnackBar(
+                            context, '${permission.toString()} is required');
+                        openAppSettings();
+                      } else if (status == PermissionStatus.granted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PostNewVideoScreen(),
+                          ),
+                        );
+                      }
+                    },
                   );
                 },
                 elevation: 3.0,
@@ -135,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getScreen(int selectedIndex) {
     if (selectedIndex == 0) {
-      return ExploreScreen();
+      return const ExploreScreen();
     } else if (selectedIndex == 1) {
-      return LibraryScreen();
+      return const LibraryScreen();
     }
   }
 }
