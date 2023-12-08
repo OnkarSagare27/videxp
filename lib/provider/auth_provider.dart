@@ -31,7 +31,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   AuthenticationProvider() {
     checkSignedIn();
-    getDataFromSP();
+    if (isSignedIn) {
+      getDataFromSP();
+    }
   }
 
   void checkSignedIn() async {
