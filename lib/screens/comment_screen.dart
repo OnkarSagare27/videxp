@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
 import 'package:videxplore/models/comment_model.dart';
 import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
@@ -99,7 +98,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 width: screenSize.width * 3 / 100,
                                 child: Center(
                                   child: Text(
-                                    '${commentContentController.length}/50',
+                                    '${commentContentController.text.length}/80',
                                     style: TextStyle(
                                         fontSize: screenSize.width * 3 / 100),
                                   ),
