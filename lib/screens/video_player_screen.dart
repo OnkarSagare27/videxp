@@ -135,7 +135,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               width: screenSize.width * 20 / 100,
                               child: Center(
                                 child: Text(
-                                  (widget.videoModel.views + 10000).toString(),
+                                  widget.videoModel.views.toString(),
                                   maxLines: 1,
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
@@ -242,7 +242,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(screenSize.width * 2 / 100),
+              padding: EdgeInsets.all(screenSize.width * 3 / 100),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey[300],
@@ -284,6 +284,32 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 3 / 100,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Comments',
+                    style: TextStyle(
+                        fontSize: screenSize.width * 4 / 100,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    child: IconButton(
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.amber)),
+                      onPressed: () {},
+                      icon: const Icon(Icons.add),
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
               stream: FirebaseFirestore.instance
                   .collection('videos')
@@ -294,23 +320,59 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
                 if (snapshot.hasData) {
                   final List<dynamic> comments = snapshot.data!['comments'];
-                  return ListView.builder(
-                    itemCount: comments.length,
-                    itemBuilder: (_, i) {
-                      final data = comments[i];
-
-                      return SizedBox(
-                        height: 50,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              data['pfp'],
+                  print(comments);
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, ind) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              left: screenSize.width * 10 / 100,
+                              right: screenSize.width * 5 / 100,
+                              top: screenSize.width * 2 / 100,
+                              bottom: comments.length - 1 == ind
+                                  ? screenSize.width * 10 / 100
+                                  : screenSize.width * 5 / 100,
                             ),
-                            radius: screenSize.width * 4 / 100,
-                          ),
-                        ),
-                      );
-                    },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  )),
+                              child: Center(
+                                child: ListTile(
+                                  isThreeLine: true,
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      comments[ind]['pfp'],
+                                    ),
+                                    radius: screenSize.width * 4 / 100,
+                                  ),
+                                  title: Text(comments[ind]['name']),
+                                  titleTextStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: screenSize.width * 3 / 100,
+                                    color: Colors.black,
+                                  ),
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: screenSize.width * 1 / 100,
+                                        bottom: screenSize.width * 1 / 100),
+                                    child: Text(comments[ind]
+                                            ['commentContent'] +
+                                        ' The way it was recorded is great Linked it sjbhusjdgfyjsdgfjsdghjsdfgjskdgfjsgdkfhgk hbsdhsgjdgyh'),
+                                  ),
+                                  subtitleTextStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: screenSize.width * 4 / 100,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                   );
                 }
 
@@ -327,7 +389,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       floatingActionButton: ElevatedButton(
         style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.amber)),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
         child: Padding(
           padding: EdgeInsets.all(
             screenSize.width * 2 / 100,
