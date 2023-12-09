@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
     ));
     return MultiProvider(
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         title: 'VidExplore',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          splashColor: Colors.white,
           brightness: Brightness.light,
           fontFamily: GoogleFonts.poppins().fontFamily,
           scaffoldBackgroundColor: Colors.white,

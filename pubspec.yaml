@@ -52,6 +52,7 @@ dependencies:
   google_nav_bar: ^5.0.6
   geolocator: ^10.1.0
   geocoding: ^2.1.1
+  chewie: ^1.7.4
 
 dev_dependencies:
   flutter_test:

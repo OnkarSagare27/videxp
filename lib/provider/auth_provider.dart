@@ -31,9 +31,6 @@ class AuthenticationProvider extends ChangeNotifier {
 
   AuthenticationProvider() {
     checkSignedIn();
-    if (isSignedIn) {
-      getDataFromSP();
-    }
   }
 
   void checkSignedIn() async {
@@ -160,6 +157,7 @@ class AuthenticationProvider extends ChangeNotifier {
   void uploadVideo({
     required BuildContext context,
     required VideoModel videoModel,
+    required UserModel userModel,
     required Function onSuccess,
   }) async {
     _isLoading = true;

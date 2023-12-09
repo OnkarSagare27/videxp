@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:videxplore/models/user_model.dart';
+import 'package:videxplore/models/video_model.dart';
+import 'package:videxplore/widgets/video_tile.dart';
 
 class ExploreScreen extends StatefulWidget {
-  const ExploreScreen({super.key});
+  final UserModel? userModel;
+  const ExploreScreen({super.key, required this.userModel});
 
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
@@ -16,8 +20,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -40,23 +42,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
               itemCount: docs.length,
               itemBuilder: (_, i) {
                 final data = docs[i].data();
-                return ListTile(
-                  leading: Image.network(
-                    data['thumbnail'],
-                    height: screenSize.width * 15 / 100,
-                    width: screenSize.width * 15 / 100,
-                  ),
-                  title: Text(data['title']),
-                  subtitle: Text(data['uploaderName']),
-                );
+                VideoModel videoModel = VideoModel.fromMap(data);
+                return VideoTile(videoModel: videoModel);
               },
             );
           }
 
           return const Center(
-              child: CircularProgressIndicator(
-            color: Colors.amber,
-          ));
+            child: CircularProgressIndicator(
+              color: Colors.amber,
+            ),
+          );
         },
       ),
     );

@@ -18,8 +18,8 @@ class VideoModel {
   List<dynamic> comments;
 
   VideoModel({
+    this.file,
     required this.title,
-    required this.file,
     required this.videoId,
     required this.uploaderName,
     required this.uploaderPfp,
@@ -34,6 +34,25 @@ class VideoModel {
     required this.comments,
     required this.thumbnail,
   });
+
+  factory VideoModel.fromMap(Map<String, dynamic> map) {
+    return VideoModel(
+      title: map["title"],
+      videoId: map["videoId"],
+      thumbnail: map["thumbnail"],
+      uploaderName: map["uploaderName"],
+      uploaderPfp: map["uploaderPfp"],
+      uploaderUid: map["uploaderUid"],
+      views: map["views"],
+      category: map["category"],
+      location: map["location"],
+      postedTimeStamp: map["postedTimeStamp"],
+      videoUrl: map["videoUrl"],
+      likes: map["likes"],
+      dislikes: map["dislikes"],
+      comments: map["comments"],
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {

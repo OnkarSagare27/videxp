@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/provider/auth_provider.dart';
 import 'package:videxplore/utils/utils.dart';
@@ -10,7 +11,9 @@ import 'package:videxplore/widgets/thumbainail_picker.dart';
 
 class PostNewVideoScreen extends StatefulWidget {
   final XFile? file;
-  const PostNewVideoScreen({super.key, required this.file});
+  final UserModel userModel;
+  const PostNewVideoScreen(
+      {super.key, required this.file, required this.userModel});
 
   @override
   State<PostNewVideoScreen> createState() => _PostNewVideoScreenState();
@@ -443,6 +446,7 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
       comments: [],
     );
     authPro.uploadVideo(
+      userModel: widget.userModel,
       context: context,
       videoModel: videoModel,
       onSuccess: () {

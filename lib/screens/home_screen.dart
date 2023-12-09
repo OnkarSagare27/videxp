@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,8 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PostNewVideoScreen(
-                                file: file,
-                              ),
+                                  file: file, userModel: userModel!),
                             ),
                           );
                         } else {
@@ -172,9 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getScreen(int selectedIndex) {
     if (selectedIndex == 0) {
-      return const ExploreScreen();
+      return ExploreScreen(userModel: userModel);
     } else if (selectedIndex == 1) {
-      return const LibraryScreen();
+      return LibraryScreen(userModel: userModel);
     }
   }
 }
