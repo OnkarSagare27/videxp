@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         title: 'VidExplore',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          colorSchemeSeed: Colors.amber,
           splashColor: Colors.white,
           brightness: Brightness.light,
           fontFamily: GoogleFonts.poppins().fontFamily,

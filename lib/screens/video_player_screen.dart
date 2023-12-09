@@ -1,14 +1,23 @@
+// ignore_for_file: invalid_return_type_for_catch_error
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
+import 'package:videxplore/screens/comment_screen.dart';
+import 'package:videxplore/screens/home_screen.dart';
+import 'package:videxplore/screens/view_all_videos_screen.dart';
+import 'package:videxplore/utils/utils.dart';
 import 'package:videxplore/widgets/vid_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final VideoModel videoModel;
+  final UserModel userModel;
   const VideoPlayerScreen({
     super.key,
     required this.videoModel,
+    required this.userModel,
   });
 
   @override
@@ -16,12 +25,45 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  bool _commentBox = false;
+  double keb = 30;
+  @override
+  void initState() {
+    updateViews();
+    super.initState();
+  }
+
+  void toggleCommentBox() {
+    _commentBox = !_commentBox;
+    setState(() {});
+  }
+
+  void updateViews() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('videos')
+        .doc(widget.videoModel.videoId)
+        .get();
+    List<dynamic> views = snapshot.get('views');
+    if (!views.contains(widget.userModel.uid)) {
+      views.add(widget.userModel.uid);
+      var collection = FirebaseFirestore.instance.collection('videos');
+      collection
+          .doc(widget.videoModel.videoId)
+          .update({'views': views})
+          .then((_) => widget.videoModel.views = views)
+          .catchError(
+              (error) => showSnackBar(context, 'Error while updating views'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             VideoPlayerView(
               dataSourceType: DataSourceType.network,
@@ -32,7 +74,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 screenSize.width * 3 / 100,
               ),
               child: Text(
-                'New random video of a city New random video of a city New random video of a city',
+                widget.videoModel.title,
                 maxLines: 3,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
@@ -48,19 +90,53 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 ElevatedButton(
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.amber)),
-                  onPressed: () {},
+                  onPressed: () async {
+                    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+                        .collection('videos')
+                        .doc(widget.videoModel.videoId)
+                        .get();
+                    List<dynamic> likes = snapshot.get('likes');
+                    List<dynamic> dislikes = snapshot.get('dislikes');
+
+                    var vidData =
+                        FirebaseFirestore.instance.collection('videos');
+                    vidData
+                        .doc(widget.videoModel.videoId)
+                        .update(likes.remove(widget.userModel.uid)
+                            ? {"likes": likes}
+                            : dislikes.remove(widget.userModel.uid)
+                                ? {
+                                    "likes": likes..add(widget.userModel.uid),
+                                    "dislikes": dislikes
+                                  }
+                                : {"likes": likes..add(widget.userModel.uid)})
+                        .then((_) {
+                      setState(() {
+                        widget.videoModel.likes = likes;
+                        widget.videoModel.dislikes = dislikes;
+                      });
+                    }).catchError(
+                      (error) => showSnackBar(
+                        context,
+                        'Error while updating likes',
+                      ),
+                    );
+                  },
                   child: Row(
                     children: [
                       Icon(
                         Icons.thumb_up_alt_rounded,
-                        color: Colors.white,
+                        color: widget.videoModel.likes
+                                .contains(widget.userModel.uid)
+                            ? Colors.green
+                            : Colors.white,
                         size: screenSize.width * 5 / 100,
                       ),
                       SizedBox(
                         width: screenSize.width * 2 / 100,
                       ),
                       Text(
-                        widget.videoModel.likes.toString(),
+                        widget.videoModel.likes.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: screenSize.width * 4 / 100,
@@ -72,21 +148,59 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 ElevatedButton(
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.amber)),
-                  onPressed: () {},
+                  onPressed: () async {
+                    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+                        .collection('videos')
+                        .doc(widget.videoModel.videoId)
+                        .get();
+                    List<dynamic> dislikes = snapshot.get('dislikes');
+                    List<dynamic> likes = snapshot.get('likes');
+
+                    var vidData =
+                        FirebaseFirestore.instance.collection('videos');
+                    vidData
+                        .doc(widget.videoModel.videoId)
+                        .update(dislikes.remove(widget.userModel.uid)
+                            ? {"dislikes": dislikes}
+                            : likes.remove(widget.userModel.uid)
+                                ? {
+                                    "dislikes": dislikes
+                                      ..add(widget.userModel.uid),
+                                    "likes": likes
+                                  }
+                                : {
+                                    "dislikes": dislikes
+                                      ..add(widget.userModel.uid)
+                                  })
+                        .then((_) {
+                      setState(() {
+                        widget.videoModel.likes = likes;
+                        widget.videoModel.dislikes = dislikes;
+                      });
+                    }).catchError(
+                      (error) => showSnackBar(
+                        context,
+                        'Error while updating dislikes',
+                      ),
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.thumb_down_alt_rounded,
-                        color: Colors.white,
+                        color: widget.videoModel.dislikes
+                                .contains(widget.userModel.uid)
+                            ? Colors.red
+                            : Colors.white,
                         size: screenSize.width * 5 / 100,
                       ),
                       SizedBox(
                         width: screenSize.width * 2 / 100,
                       ),
                       Text(
-                        widget.videoModel.dislikes.toString(),
+                        widget.videoModel.dislikes.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: screenSize.width * 4 / 100,
@@ -135,7 +249,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               width: screenSize.width * 20 / 100,
                               child: Center(
                                 child: Text(
-                                  widget.videoModel.views.toString(),
+                                  widget.videoModel.views.length.toString(),
                                   maxLines: 1,
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
@@ -278,7 +392,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewAllVideosScreen(
+                              uploaderUid: widget.videoModel.uploaderUid,
+                              userModel: widget.userModel,
+                              uploaderName: widget.videoModel.uploaderName,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -302,7 +427,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.amber)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommentScreen(
+                                    userModel: widget.userModel,
+                                    videoModel: widget.videoModel,
+                                  )),
+                        );
+                      },
                       icon: const Icon(Icons.add),
                       color: Colors.white,
                     ),
@@ -320,7 +454,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
                 if (snapshot.hasData) {
                   final List<dynamic> comments = snapshot.data!['comments'];
-                  print(comments);
+
                   return Expanded(
                     child: ListView.builder(
                         itemCount: comments.length,
@@ -331,7 +465,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               right: screenSize.width * 5 / 100,
                               top: screenSize.width * 2 / 100,
                               bottom: comments.length - 1 == ind
-                                  ? screenSize.width * 10 / 100
+                                  ? screenSize.width * 20 / 100
                                   : screenSize.width * 5 / 100,
                             ),
                             child: Container(
@@ -359,9 +493,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                     padding: EdgeInsets.only(
                                         top: screenSize.width * 1 / 100,
                                         bottom: screenSize.width * 1 / 100),
-                                    child: Text(comments[ind]
-                                            ['commentContent'] +
-                                        ' The way it was recorded is great Linked it sjbhusjdgfyjsdgfjsdghjsdfgjskdgfjsgdkfhgk hbsdhsgjdgyh'),
+                                    child:
+                                        Text(comments[ind]['commentContent']),
                                   ),
                                   subtitleTextStyle: TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -390,7 +523,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         style: const ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.amber)),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()));
         },
         child: Padding(
           padding: EdgeInsets.all(

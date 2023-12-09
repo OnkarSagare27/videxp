@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/screens/video_player_screen.dart';
 
 class VideoTile extends StatefulWidget {
   final VideoModel videoModel;
-  const VideoTile({super.key, required this.videoModel});
+  final UserModel userModel;
+  const VideoTile({
+    super.key,
+    required this.videoModel,
+    required this.userModel,
+  });
 
   @override
   State<VideoTile> createState() => _VideoTileState();
@@ -23,11 +29,14 @@ class _VideoTileState extends State<VideoTile> {
           Radius.circular(20),
         ),
         onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => VideoPlayerScreen(
-                      videoModel: widget.videoModel,
-                    ))),
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPlayerScreen(
+              userModel: widget.userModel,
+              videoModel: widget.videoModel,
+            ),
+          ),
+        ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
@@ -78,7 +87,7 @@ class _VideoTileState extends State<VideoTile> {
                   ),
                   title: Text(
                     widget.videoModel.title,
-                    maxLines: 1,
+                    maxLines: 2,
                   ),
                   titleTextStyle: TextStyle(
                     overflow: TextOverflow.ellipsis,
@@ -179,7 +188,8 @@ class _VideoTileState extends State<VideoTile> {
                                         width: screenSize.width * 5 / 100,
                                         child: Center(
                                           child: Text(
-                                            widget.videoModel.views.toString(),
+                                            widget.videoModel.views.length
+                                                .toString(),
                                             maxLines: 1,
                                             style: TextStyle(
                                               overflow: TextOverflow.ellipsis,

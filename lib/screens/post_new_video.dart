@@ -434,15 +434,15 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
       videoId: "",
       uploaderName: "",
       uploaderPfp: "",
-      views: 0,
+      views: [],
       category: _selectedCategory,
       location: _location,
       postedTimeStamp: DateTime.now().millisecondsSinceEpoch,
       uploaderUid: '',
       videoUrl: "",
       thumbnail: thumbnail,
-      likes: 0,
-      dislikes: 0,
+      likes: [],
+      dislikes: [],
       comments: [],
     );
     authPro.uploadVideo(

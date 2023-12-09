@@ -7,13 +7,13 @@ class VideoModel {
   String uploaderName;
   String uploaderPfp;
   String uploaderUid;
-  int views;
+  List<dynamic> views;
   String category;
   String location;
   int postedTimeStamp;
   String videoUrl;
-  int likes;
-  int dislikes;
+  List<dynamic> likes;
+  List<dynamic> dislikes;
   dynamic thumbnail;
   List<dynamic> comments;
 

@@ -137,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final XFile? file = await _picker.pickVideo(
                             source: ImageSource.camera,
                             maxDuration: const Duration(seconds: 10));
+
                         if (file != null) {
                           Navigator.push(
                             context,

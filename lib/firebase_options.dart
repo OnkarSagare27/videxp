@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB_TF_TI8scukxSdRpZpfVKwB8vxLIWGUI',
-    appId: '1:836519335520:android:bbfa3996848d7af38e5505',
-    messagingSenderId: '836519335520',
-    projectId: 'videxplore-6b82f',
-    storageBucket: 'videxplore-6b82f.appspot.com',
+    apiKey: 'AIzaSyDWSOODlrla9me_njkmn8_lZXC90jzxyl0',
+    appId: '1:782889656084:android:c8ff251e53f99d5fd0ac01',
+    messagingSenderId: '782889656084',
+    projectId: 'videxplore-1',
+    storageBucket: 'videxplore-1.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCRullMfkunVnaLyLyBXdMTIPlPfjsiDQg',
-    appId: '1:836519335520:ios:7b052e8912ec3ede8e5505',
-    messagingSenderId: '836519335520',
-    projectId: 'videxplore-6b82f',
-    storageBucket: 'videxplore-6b82f.appspot.com',
+    apiKey: 'AIzaSyBVw45gmObbgPUkq-RKu4JiJ_jAVoCIEow',
+    appId: '1:782889656084:ios:c91d07030d686652d0ac01',
+    messagingSenderId: '782889656084',
+    projectId: 'videxplore-1',
+    storageBucket: 'videxplore-1.appspot.com',
     iosBundleId: 'com.onkarsagare.videxplore',
   );
 }

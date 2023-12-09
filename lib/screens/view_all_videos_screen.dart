@@ -4,15 +4,21 @@ import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/widgets/video_tile.dart';
 
-class LibraryScreen extends StatefulWidget {
-  final UserModel? userModel;
-  const LibraryScreen({super.key, required this.userModel});
+class ViewAllVideosScreen extends StatefulWidget {
+  final String uploaderUid;
+  final String uploaderName;
+  final UserModel userModel;
+  const ViewAllVideosScreen(
+      {super.key,
+      required this.uploaderUid,
+      required this.userModel,
+      required this.uploaderName});
 
   @override
-  State<LibraryScreen> createState() => _LibraryScreenState();
+  State<ViewAllVideosScreen> createState() => _ViewAllVideosScreenState();
 }
 
-class _LibraryScreenState extends State<LibraryScreen> {
+class _ViewAllVideosScreenState extends State<ViewAllVideosScreen> {
   @override
   void initState() {
     super.initState();
@@ -27,9 +33,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text(
-          'Library',
-          style: TextStyle(
+        title: Text(
+          'All posts: ${widget.uploaderName}',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -37,7 +43,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('videos')
-            .where("uploaderUid", isEqualTo: widget.userModel!.uid)
+            .where("uploaderUid", isEqualTo: widget.uploaderUid)
             .snapshots(),
         builder: (_, snapshot) {
           if (snapshot.hasError) return Text('Error = ${snapshot.error}');
@@ -51,7 +57,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 VideoModel videoModel = VideoModel.fromMap(data);
                 return VideoTile(
                   videoModel: videoModel,
-                  userModel: widget.userModel!,
+                  userModel: widget.userModel,
                 );
               },
             );

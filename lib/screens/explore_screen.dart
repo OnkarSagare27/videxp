@@ -43,7 +43,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
               itemBuilder: (_, i) {
                 final data = docs[i].data();
                 VideoModel videoModel = VideoModel.fromMap(data);
-                return VideoTile(videoModel: videoModel);
+                return VideoTile(
+                  videoModel: videoModel,
+                  userModel: widget.userModel!,
+                );
               },
             );
           }

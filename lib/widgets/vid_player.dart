@@ -50,6 +50,10 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
             (_) => mounted
                 ? setState(
                     () => _chewieController = ChewieController(
+                      materialProgressColors: ChewieProgressColors(
+                        playedColor: Colors.amber,
+                        bufferedColor: Colors.amber.withOpacity(0.2),
+                      ),
                       allowFullScreen: false,
                       videoPlayerController: _videoPlayerController!,
                       aspectRatio: 16 / 9,
