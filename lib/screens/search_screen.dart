@@ -35,6 +35,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(
@@ -45,7 +46,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: widget.category != 'Category'
+        stream: widget.category != 'Clear filter'
             ? FirebaseFirestore.instance
                 .collection('videos')
                 .where("category", isEqualTo: widget.category)
@@ -56,30 +57,24 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
           if (snapshot.hasData) {
             final docs = snapshot.data!.docs;
+
             return ListView.builder(
               itemCount: docs.length,
               itemBuilder: (_, i) {
                 final data = docs[i].data();
-                VideoModel videoModel = VideoModel.fromMap(data);
-                if (widget.searchString.isNotEmpty) {
-                  bool containsElement = widget.searchString.split(' ').any(
-                        (element) => data.toString().toLowerCase().contains(
-                              element.toLowerCase(),
-                            ),
-                      );
 
-                  if (containsElement) {
-                    return VideoTile(
-                      videoModel: videoModel,
-                      userModel: widget.userModel,
-                    );
-                  }
-                }
-                if (widget.category == data['category']) {
+                VideoModel videoModel = VideoModel.fromMap(data);
+                if (widget.searchString.split(' ').any((element) =>
+                        (data['title'] +
+                                data['location'] +
+                                data['uploaderName'] +
+                                data['category'])
+                            .toString()
+                            .toLowerCase()
+                            .contains(element.toLowerCase())) ||
+                    widget.category == docs[i].data()['category']) {
                   return VideoTile(
-                    videoModel: videoModel,
-                    userModel: widget.userModel,
-                  );
+                      videoModel: videoModel, userModel: widget.userModel);
                 }
                 return null;
               },

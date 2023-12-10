@@ -70,6 +70,7 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
     }
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(

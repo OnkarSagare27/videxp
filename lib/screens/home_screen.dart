@@ -121,7 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Colors.amber,
                       onPressed: () async {
                         Map<Permission, PermissionStatus> statuses = await [
-                          Permission.videos,
                           Permission.camera,
                           Permission.locationWhenInUse,
                         ].request();

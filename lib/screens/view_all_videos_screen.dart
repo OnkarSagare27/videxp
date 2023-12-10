@@ -31,6 +31,7 @@ class _ViewAllVideosScreenState extends State<ViewAllVideosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(

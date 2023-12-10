@@ -9,6 +9,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: const Text('Info'),
       ),
       body: SingleChildScrollView(

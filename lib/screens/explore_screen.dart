@@ -16,8 +16,9 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  String _selectedCategory = 'Category';
+  String _selectedCategory = 'Clear filter';
   final List<String> _category = [
+    'Clear filter',
     'Gaming',
     'Programming',
     'Vacation',
@@ -37,6 +38,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(
@@ -160,7 +162,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     IconButton(
                       onPressed: () async {
                         if (searchController.text.isNotEmpty ||
-                            _selectedCategory != 'Category') {
+                            _selectedCategory != 'Clear filter') {
                           Navigator.push(
                             context,
                             MaterialPageRoute(

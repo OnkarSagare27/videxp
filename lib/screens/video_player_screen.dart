@@ -26,8 +26,9 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  String _selectedCategory = 'Category';
+  String _selectedCategory = 'Clear filter';
   final List<String> _category = [
+    'Clear filter',
     'Gaming',
     'Programming',
     'Vacation',
@@ -163,7 +164,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       IconButton(
                         onPressed: () async {
                           if (searchController.text.isNotEmpty ||
-                              _selectedCategory != 'Category') {
+                              _selectedCategory != 'Clear filter') {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -434,7 +435,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                       width: screenSize.width * 20 / 100,
                                       child: Center(
                                         child: Text(
-                                          widget.videoModel.postedTimeStamp
+                                          formatTimeAgo(widget
+                                                  .videoModel.postedTimeStamp)
                                               .toString(),
                                           maxLines: 1,
                                           style: TextStyle(
