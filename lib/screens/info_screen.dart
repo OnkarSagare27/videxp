@@ -83,6 +83,7 @@ class InfoScreen extends StatelessWidget {
                 fontSize: screenSize.width * 3.5 / 100,
               ),
               trailing: IconButton(
+                tooltip: 'Log out',
                 onPressed: () async {
                   SharedPreferences s = await SharedPreferences.getInstance();
                   if (await s.clear()) {
