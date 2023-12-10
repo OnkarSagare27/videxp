@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (cont) => AuthenticationProvider())
       ],
       child: MaterialApp(
-        title: 'VidExplore',
+        title: 'VidExp',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
