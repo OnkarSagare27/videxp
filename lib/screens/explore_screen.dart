@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/screens/search_screen.dart';
+import 'package:videxplore/screens/settings_screen.dart';
 import 'package:videxplore/utils/utils.dart';
 import 'package:videxplore/widgets/video_tile.dart';
 
@@ -44,6 +45,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: screenSize.width * 2 / 100),
+            child: IconButton(
+              tooltip: 'Info',
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              ),
+              icon: const Icon(
+                Icons.info_outline_rounded,
+              ),
+            ),
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -109,13 +127,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             ),
                           ),
                           suffixIcon: SizedBox(
-                            width: screenSize.width * 10 / 100,
+                            width: screenSize.width * 20 / 100,
                             child: DropdownButton<String>(
                               dropdownColor: Colors.amber,
                               elevation: 0,
                               isExpanded: true,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20),
+                              ),
                               items: _category.map((String val) {
                                 return DropdownMenuItem<String>(
                                   value: val,

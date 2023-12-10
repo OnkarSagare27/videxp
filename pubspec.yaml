@@ -54,6 +54,7 @@ dependencies:
   geocoding: ^2.1.1
   chewie: ^1.7.4
   sliding_up_panel: ^2.0.0+1
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   flutter_test:

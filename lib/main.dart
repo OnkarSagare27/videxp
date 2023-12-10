@@ -29,11 +29,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.light.copyWith(
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+      ),
+    );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (cont) => AuthenticationProvider())
@@ -42,6 +44,9 @@ class MyApp extends StatelessWidget {
         title: 'VidExplore',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.transparent,
+          ),
           colorSchemeSeed: Colors.amber,
           splashColor: Colors.white,
           brightness: Brightness.light,

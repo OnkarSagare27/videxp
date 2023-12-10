@@ -63,7 +63,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           .update({'views': views})
           .then((_) => widget.videoModel.views = views)
           .catchError(
-              (error) => showSnackBar(context, 'Error while updating views'));
+            (error) => showSnackBar(context, 'Error while updating views'),
+          );
     }
   }
 
@@ -130,7 +131,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               ),
                             ),
                             suffixIcon: SizedBox(
-                              width: screenSize.width * 10 / 100,
+                              width: screenSize.width * 20 / 100,
                               child: DropdownButton<String>(
                                 dropdownColor: Colors.amber,
                                 elevation: 0,
