@@ -25,7 +25,14 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
   bool _isRetried = false;
   late String _location;
   String _selectedCategory = 'Category';
-  final List<String> _locations = ['Nature', 'City', 'Desert', 'Jungle'];
+  final List<String> _category = [
+    'Gaming',
+    'Programming',
+    'Vacation',
+    'Hiking',
+    'Movie',
+    'Other'
+  ];
   TextEditingController titleController = TextEditingController();
   File? thumbnail;
   @override
@@ -298,7 +305,7 @@ class _PostNewVideoScreenState extends State<PostNewVideoScreen> {
                                     isExpanded: true,
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(20)),
-                                    items: _locations.map((String val) {
+                                    items: _category.map((String val) {
                                       return DropdownMenuItem<String>(
                                         value: val,
                                         child: Text(val),

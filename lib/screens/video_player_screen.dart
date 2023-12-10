@@ -27,7 +27,14 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   String _selectedCategory = 'Category';
-  final List<String> _locations = ['Nature', 'City', 'Desert', 'Jungle'];
+  final List<String> _category = [
+    'Gaming',
+    'Programming',
+    'Vacation',
+    'Hiking',
+    'Movie',
+    'Other'
+  ];
   TextEditingController searchController = TextEditingController();
   bool _commentBox = false;
   double keb = 30;
@@ -130,7 +137,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                 isExpanded: true,
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(20)),
-                                items: _locations.map((String val) {
+                                items: _category.map((String val) {
                                   return DropdownMenuItem<String>(
                                     value: val,
                                     child: Text(val),

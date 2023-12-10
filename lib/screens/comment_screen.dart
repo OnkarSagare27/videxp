@@ -126,16 +126,19 @@ class _CommentScreenState extends State<CommentScreen> {
 
                             var vidData =
                                 FirebaseFirestore.instance.collection('videos');
+
                             vidData.doc(widget.videoModel.videoId).update({
-                              "comments": comments..add(commentModel.toMap())
+                              "comments": comments
+                                ..insert(0, commentModel.toMap())
                             }).then((_) {
                               setState(() {
                                 widget.videoModel.comments = comments;
+                                commentContentController.clear();
                               });
                             }).catchError(
                               (error) => showSnackBar(
                                 context,
-                                'Error while updating dislikes',
+                                'Error while updating comments',
                               ),
                             );
                           } else {

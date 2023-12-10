@@ -16,7 +16,14 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   String _selectedCategory = 'Category';
-  final List<String> _locations = ['Nature', 'City', 'Desert', 'Jungle'];
+  final List<String> _category = [
+    'Gaming',
+    'Programming',
+    'Vacation',
+    'Hiking',
+    'Movie',
+    'Other'
+  ];
   TextEditingController searchController = TextEditingController();
   @override
   void initState() {
@@ -109,7 +116,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               isExpanded: true,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(20)),
-                              items: _locations.map((String val) {
+                              items: _category.map((String val) {
                                 return DropdownMenuItem<String>(
                                   value: val,
                                   child: Text(val),
