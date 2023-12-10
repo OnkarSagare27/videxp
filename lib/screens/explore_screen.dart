@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:videxplore/models/user_model.dart';
 import 'package:videxplore/models/video_model.dart';
 import 'package:videxplore/screens/search_screen.dart';
-import 'package:videxplore/screens/settings_screen.dart';
+import 'package:videxplore/screens/info_screen.dart';
 import 'package:videxplore/utils/utils.dart';
 import 'package:videxplore/widgets/video_tile.dart';
 
@@ -55,7 +55,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
+                  builder: (context) => InfoScreen(
+                    userModel: widget.userModel!,
+                  ),
                 ),
               ),
               icon: const Icon(

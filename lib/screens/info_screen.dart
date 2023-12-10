@@ -1,8 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+// ignore_for_file: use_build_context_synchronously
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:videxplore/models/user_model.dart';
+import 'package:videxplore/utils/utils.dart';
+
+class InfoScreen extends StatelessWidget {
+  final UserModel userModel;
+  const InfoScreen({
+    super.key,
+    required this.userModel,
+  });
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -35,6 +44,58 @@ class SettingsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 color: Colors.black38,
                 fontSize: screenSize.width * 3.5 / 100,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 5 / 100,
+                  vertical: screenSize.width * 5 / 100),
+              child: Text(
+                'Account',
+                style: TextStyle(
+                  fontSize: screenSize.width * 4 / 100,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  userModel.pfp,
+                ),
+                radius: screenSize.width * 6 / 100,
+              ),
+              title: Text(
+                userModel.name,
+                maxLines: 1,
+              ),
+              titleTextStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: screenSize.width * 4 / 100,
+              ),
+              subtitle: Text(userModel.phoneNumber),
+              subtitleTextStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.w500,
+                color: Colors.black38,
+                fontSize: screenSize.width * 3.5 / 100,
+              ),
+              trailing: IconButton(
+                onPressed: () async {
+                  SharedPreferences s = await SharedPreferences.getInstance();
+                  if (await s.clear()) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'phone', (route) => false);
+                  } else {
+                    showSnackBar(
+                        context, 'Failed to log out user, try again later');
+                  }
+                },
+                icon: const Icon(
+                  Icons.logout_rounded,
+                ),
               ),
             ),
             Padding(
