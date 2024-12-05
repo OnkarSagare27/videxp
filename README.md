@@ -1,4 +1,4 @@
-# A simple Delivery application built using Flutter
+# A simple Video sharing application built using Flutter
 
 ![](https://github.com/OnkarSagare27/videxplore/blob/master/demo/videxp1.png)
 
